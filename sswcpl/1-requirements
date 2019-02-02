@@ -25,6 +25,10 @@ tar xzf helm-v2.12.3-linux-amd64.tar.gz
 # binaries under ./linux-amd64
 # add the binary to your path
 
+# installing docker-compose
+# Many options: https://docs.docker.com/compose/install/
+sudo curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
 ## Checkout a couple of repos (in advance)
 git clone https://github.com/draios/falco.git
 git clone https://github.com/draios/falco-extras.git
