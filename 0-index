@@ -1,0 +1,14 @@
+0 - Intro (Who, What, Connect to Slack)
+1 - Docker security
+BREAK (install requirements)
+2 - K8S security (With practical examples)
+3 - Image Scanning (Practical example + jenkins show up)
+BREAK (while building)
+4 - Introducing Falco by comparing state of art
+5 - Falco example (Practical example)
+6 - New feature (K8S integration) Falco example
+
+List of requirements:
+    - Connect to Sysdig Slack
+    - Copy-Paste help tarball (sswcpl)
+        - Requirements file

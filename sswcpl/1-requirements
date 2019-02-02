@@ -1,0 +1,30 @@
+REQUIREMENTS
+
+## installing minikube
+curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+chmod +x minikube
+minikube version
+Want virtualbox? https://www.virtualbox.org/
+# We might want to "$ minikube start" in advance
+
+## installing kubectl
+curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.11.7/bin/linux/amd64/kubectl
+chmod +x kubectl
+# add the binary to your path
+kubectl version
+
+## installing kubeless
+curl -LO https://github.com/kubeless/kubeless/releases/download/v1.0.0/kubeless_linux-amd64.zip
+unzip kubeless_linux-amd64.zip
+# binaries under ./bundles/kubeless_linux-amd64
+# add the binary to your path
+
+## installing helm
+curl -LO https://storage.googleapis.com/kubernetes-helm/helm-v2.12.3-linux-amd64.tar.gz
+tar xzf helm-v2.12.3-linux-amd64.tar.gz
+# binaries under ./linux-amd64
+# add the binary to your path
+
+## Checkout a couple of repos (in advance)
+git clone https://github.com/draios/falco.git
+git clone https://github.com/draios/falco-extras.git
