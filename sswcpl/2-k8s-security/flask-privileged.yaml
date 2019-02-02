@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: flask-privileged
+  namespace: security
+spec:
+  containers:
+  - image: mateobur/flask
+    name: flask
+    securityContext:
+      privileged: true

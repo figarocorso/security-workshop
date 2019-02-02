@@ -1,0 +1,51 @@
+# Create our test namespace
+kubectl create ns security
+# You might want to: alias kc='kubectl -n security'
+
+# Checking root user executed command
+kubectl -n security run -i --tty busybox --image=busybox --restart=Never -- sh
+ps aux
+
+# Creating a runAsUser container
+kubectl -n security create -f user-group.yaml
+kubectl -n security exec -ti security-context-demo bash
+ps aux
+# https://duckduckgo.com/?q=vaca&ia=images&iax=images
+touch /vaca
+ls -l /
+touch /data/demo/vaca
+ls -l /data/demo
+
+# Checking regular flask container has connectivity
+kubectl -n security create -f flask.yaml
+kubectl -n security exec -it flask bash
+ping 8.8.8.8
+chown daemon /tmp
+ls -l / | grep tmp
+
+# Let's remove some capabilities and test that
+kubectl -n security create -f flask-cap.yaml
+kubectl -n security exec -it flask-cap bash
+ping 8.8.8.8
+chown daemon /tmp
+
+# Check read only context
+kubectl -n security create -f flask-ro.yaml
+kubectl -n security exec -ti flask-ro bash
+mount | grep "/ "
+touch vaca
+
+# Clean sh*t out
+kubectl delete ns security
+
+# Extra ball: PodSecurityPolicy
+minikube delete
+minikube start --extra-config=apiserver.enable-admission-plugins=Initializers,NamespaceLifecycle,LimitRanger,ServiceAccount,PersistentVolumeLabel,DefaultStorageClass,DefaultTolerationSeconds,NodeRestriction,ResourceQuota,PodSecurityPolicy
+# PodSecurityPolicy
+kubectl -n security create -f flask-ro.yaml
+kubectl get psp
+kubectl create -f example-psp.yaml
+kubectl get psp
+kubectl -n security create -f flask-privileged.yaml
+kubectl -n security create -f flask-ro.yaml
+minikube delete

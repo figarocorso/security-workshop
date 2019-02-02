@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: flask-ro
+  namespace: security
+spec:
+  containers:
+  - image: mateobur/flask
+    name: flask-ro
+    securityContext:
+      readOnlyRootFilesystem: true

@@ -1,7 +1,7 @@
 0 - Intro (Who, What, Connect to Slack)
 1 - Docker security
 BREAK (install requirements)
-2 - K8S security (With practical examples)
+2 - K8S security (With practical examples + extra ball [PSP])
 3 - Image Scanning (Practical example + jenkins show up)
 BREAK (while building)
 4 - Introducing Falco by comparing state of art
