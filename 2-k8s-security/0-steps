@@ -42,6 +42,7 @@ kubectl delete ns security
 minikube delete
 minikube start --extra-config=apiserver.enable-admission-plugins=Initializers,NamespaceLifecycle,LimitRanger,ServiceAccount,PersistentVolumeLabel,DefaultStorageClass,DefaultTolerationSeconds,NodeRestriction,ResourceQuota,PodSecurityPolicy
 # PodSecurityPolicy
+kubectl create ns security
 kubectl -n security create -f flask-ro.yaml
 kubectl get psp
 kubectl create -f example-psp.yaml

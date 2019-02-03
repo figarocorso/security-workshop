@@ -1,5 +1,5 @@
 # Launch K8S cluster locally
-minikube start --kubernetes-version v1.11.7
+minikube start
 
 # Check kubectl is OK and cluster is running
 kubectl get nodes
@@ -53,7 +53,7 @@ cat /etc/shadow
 
 # Enable redirect everything to "slack"
 kubeless function list
-kubeless function delete falco-delete
+kubeless function delete falco-slack
 kubeless trigger nats list
 kubeless trigger nats delete falco-slack-trigger-0
 ./deploy_playbook -p slack -t "falco.*.*" -e SLACK_WEBHOOK_URL=<WEBHOOK_URL>

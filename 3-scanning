@@ -33,3 +33,4 @@ anchore-cli --u admin --p foobar  image content docker.io/library/traefik:latest
 # Clean stuff
 docker-compose kill
 docker-compose rm
+deactivate
