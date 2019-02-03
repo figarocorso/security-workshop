@@ -1,0 +1,67 @@
+# Launch K8S cluster locally
+minikube start --kubernetes-version v1.11.7
+
+# Check kubectl is OK and cluster is running
+kubectl get nodes
+kubectl config current-context  # should return minikube
+
+#Pin a terminal with this command or similar
+watch -n1 kubectl get all --all-namespaces
+
+# Prepare helm and wait until tiller is deployed
+helm init
+# watch -n1 kubectl get all --all-namespaces
+
+# Install NATS and Kubeless
+git clone https://github.com/draios/falco.git
+cd falco/integrations/kubernetes-response-engine/deployment/cncf
+make
+# Previous command will fail, wait for operator and retry
+make
+
+# Create a default set of Falco rules
+git clone https://github.com/draios/falco-extras.git
+cd falco-extras
+./scripts/rules2helm rules/rules-traefik.yaml rules/rules-redis.yaml > custom-rules.yaml
+less custom-rules.yaml  # let's take a quick look
+
+# Install Falco at the cluster
+helm repo update 
+helm install --name sysdig-falco-1 --set integrations.natsOutput.enabled=true --set ebpf.enabled=true -f custom-rules.yaml stable/falco
+# Pin one terminal with
+kubectl logs <FALCO_POD> -c falco 
+
+# Deploy a playbook to forward events to a webhook
+# Visit and get the <WEBHOOK_URL>: https://webhook.site
+cd falco/integrations/kubernetes-response-engine/playbooks
+./deploy_playbook -p slack -t "falco.error.*" -e SLACK_WEBHOOK_URL=<WEBHOOK_URL>
+# wait for falco-slack pod
+
+# Let's open a shell
+kubectl run nginx --image=nginx
+kubectl exec -ti <NGING_POD> bash
+kubectl logs <FALCO_POD> -c falco-nats -f
+
+# And run some nasty commands
+touch /vaca  # falco.error.write_below_root
+# Check your <WEBHOOK_URL>
+touch /etc/vaca
+touch /usr/bin/vaca
+touch /bin/vaca
+cat /etc/shadow
+# exit container
+
+# Enable redirect everything to "slack"
+kubeless function list
+kubeless function delete falco-delete
+kubeless trigger nats list
+kubeless trigger nats delete falco-slack-trigger-0
+./deploy_playbook -p slack -t "falco.*.*" -e SLACK_WEBHOOK_URL=<WEBHOOK_URL>
+kubectl exec -ti <NGING_POD> bash
+cat /etc/shadow  # falco.warning.read_sensitive_file_untrusted
+# Check your "slack" <WEBHOOK_URL>
+
+# Better avoiding opening a terminal shell
+./deploy_playbook -p delete -t "falco.notice.terminal_shell_in_container"
+kubectl exec -ti <NGING_POD> bash  # we got you, hacker :-)
+# Check the logs
