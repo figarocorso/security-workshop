@@ -1,5 +1,5 @@
 # Launch K8S cluster locally
-minikube start
+minikube start --memory 4096
 
 # Check kubectl is OK and cluster is running
 kubectl get nodes
