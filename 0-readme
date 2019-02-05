@@ -1,15 +1,4 @@
-0 - Intro
-  Welcome to Sysdig Security Workshop. Have a warm welcome from QA Sysdigers
-    - Miguel Julián (@miky_kun)
-    - Julio García (@papajulio)
-  List of requirements:
-    - Connect to Sysdig Slack
-    - Requirements file
-1 - Docker security
-BREAK (install requirements)
-2 - K8S security (With practical examples + extra ball [PSP])
-3 - Image Scanning (Practical example + jenkins show up)
-BREAK (while building)
-4 - Introducing Falco by comparing state of art
-5 - Falco example (Practical example)
-6 - New feature (K8S integration) Falco example
+Welcome to Sysdig Security Workshop. Have a warm welcome from QA Sysdigers
+  - Miguel Julián (@miky_kun)
+  - Julio García (@papajulio)
+Let's start by following the 1-requierements
