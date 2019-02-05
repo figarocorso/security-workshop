@@ -5,7 +5,6 @@ curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/miniku
 chmod +x minikube
 minikube version
 Want virtualbox? https://www.virtualbox.org/
-# We might want to "$ minikube start" in advance
 
 ## installing kubectl
 curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.11.7/bin/linux/amd64/kubectl
@@ -33,7 +32,3 @@ pip install pipenv
 ## Checkout a couple of repos (in advance)
 git clone https://github.com/draios/falco.git
 git clone https://github.com/draios/falco-extras.git
-
-# [Optional] installing docker-compose
-# Many options: https://docs.docker.com/compose/install/
-sudo curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose

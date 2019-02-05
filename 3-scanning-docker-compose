@@ -1,0 +1,40 @@
+## ALTERNATIVE WAY
+# We could also use docker-compose and anchorecli python library
+
+# Many options: https://docs.docker.com/compose/install/
+sudo curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+docker-compose
+
+# Install anchore using docker-compose
+mkdir anchore
+cd anchore
+curl https://raw.githubusercontent.com/anchore/anchore-engine/master/scripts/docker-compose/docker-compose.yaml > docker-compose.yaml
+mkdir config
+curl https://raw.githubusercontent.com/anchore/anchore-engine/master/scripts/docker-compose/config.yaml > config/config.yaml
+mkdir db
+docker-compose up -d
+
+# Install anchore-cli inside a virtualenv
+virtualenv venv
+source venv/bin/activate
+pip install anchorecli
+anchore-cli --u admin --p foobar --url http://172.18.0.1:8228/v1 system status
+
+# Check a passing image
+anchore-cli --u admin --p foobar image add  docker.io/library/traefik:latest
+anchore-cli --u admin --p foobar image get docker.io/library/traefik:latest
+anchore-cli --u admin --p foobar image vuln docker.io/library/traefik:latest all
+
+# Check a image with vulnerabilities
+anchore-cli --u admin --p foobar image add docker.io/library/debian:latest
+anchore-cli --u admin --p foobar image get docker.io/library/debian:latest
+anchore-cli --u admin --p foobar image vuln docker.io/library/debian:latest all
+
+# Inspet image
+anchore-cli --u admin --p foobar  image content docker.io/library/traefik:latest
+anchore-cli --u admin --p foobar  image content docker.io/library/traefik:latest files
+
+# Clean stuff
+docker-compose kill
+docker-compose rm
+deactivate
