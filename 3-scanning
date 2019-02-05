@@ -7,18 +7,22 @@ ANCHORE_CLI_PASS=$(kubectl get secret --namespace default anchore-stack-anchore-
 kubectl run -i --tty anchore-cli --image anchore/engine-cli --env ANCHORE_CLI_USER=admin --env ANCHORE_CLI_PASS=${ANCHORE_CLI_PASS} --env ANCHORE_CLI_URL=http://anchore-stack-anchore-engine-api:8228/v1/
 anchore-cli system status
 
+# Check how vuln. are being downloaed
+anchore-cli system feeds list
+
 # Analyze a correct image
 anchore-cli image add docker.io/library/alpine:3.3
 watch -n1 anchore-cli image get docker.io/library/alpine:3.3
+# anchore-cli image wait docker.io/library/alpine:3.3
 anchore-cli evaluate check docker.io/library/alpine:3.3
 anchore-cli image vuln docker.io/library/alpine:3.3 all
+anchore-cli image content docker.io/library/alpine:3.3 os
 
 # Analyze a failing image
 anchore-cli image add docker.io/library/centos:5
 watch -n1 anchore-cli image get docker.io/library/centos:5
 anchore-cli evaluate check docker.io/library/centos:5
 anchore-cli image vuln docker.io/library/centos:5 all
-
 
 # Delete Anchore helm chart
 helm del --purge anchore-stack
