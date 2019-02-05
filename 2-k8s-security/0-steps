@@ -1,10 +1,12 @@
 # Launch the kubernetes cluster with minikube
 minikube start --extra-config=apiserver.enable-admission-plugins=Initializers,NamespaceLifecycle,LimitRanger,ServiceAccount,PersistentVolumeLabel,DefaultStorageClass,DefaultTolerationSeconds,NodeRestriction,ResourceQuota,PodSecurityPolicy
-kubectl create -f default-psp.yaml
 
 # Check kubectl is OK and cluster is running
 kubectl get nodes
 kubectl config current-context  # should return minikube
+
+# Default PSP
+kubectl create -f default-psp.yaml
 
 # Create our test namespace
 kubectl create ns security
